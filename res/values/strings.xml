@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">홈네트워크Pi</string>
+    <string name="action_settings">Settings</string>
+    <string name="ip">IP주소</string>
+    <string name="password">비밀번호</string>
+    <string name="connect">접속하기</string>
+    <string-array name="tab">
+        <item >사진</item>
+        <item >동영상</item>
+        <item >설정</item>
+    </string-array>
+        <string name="movie">movie</string>
+        <string name="picture">picture</string>
+        <string-array name="setting">
+            <item >인체감지알림</item>
+            <item >주야간 설정</item>
+            <item >신고</item>
+        </string-array>
+        <string name="startMovie">동영상 보기</string>
+        <string name="startPicture">사진 보기</string>
+
+</resources>
