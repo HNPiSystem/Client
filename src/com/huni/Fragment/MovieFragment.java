@@ -3,6 +3,8 @@ package com.huni.Fragment;
 import com.huni.R;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,7 +34,10 @@ public class MovieFragment extends Fragment{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				Uri uri = Uri.parse("http://www.archive.org/download/Unexpect2001/Unexpect2001_512kb.mp4");
+				intent.setDataAndType(uri, "video/*");
+				startActivity(intent);
 			}
 		});
 
