@@ -79,10 +79,6 @@ public class PictureFragment extends Fragment{
 
 		return rootView;
 	}
-	private void showPicture()
-	{
-
-	}
 
 	class PictureTask extends AsyncTask<Object, String, JSONObject>{
 		private ProgressDialog dialog;
@@ -124,11 +120,12 @@ public class PictureFragment extends Fragment{
 			try
 			{
 				DefaultHttpClient mhttpClient =new DefaultHttpClient();
-				HttpGet mHttpGet =new HttpGet("http://" + "192.168.0.4" + ":5000/hardware");
+				HttpGet mHttpGet =new HttpGet("http://192.168.0.4:5000/askfor?accessToken=accessToken&order=picture");
 
 				//ArrayList<NameValuePair> nameValuePairs =new ArrayList<NameValuePair>();
 				//nameValuePairs.add(new BasicNameValuePair("order","picture"));	//전달할 인자들 설정
 				//mHttpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				//Post방식에서 헤더에 값 설정하는 부분인데 get으로 해서 지금 주석처리중
 
 				HttpResponse mhttpHttpResponse= mhttpClient.execute(mHttpGet);
 				HttpEntity mHttpEntity =mhttpHttpResponse.getEntity();

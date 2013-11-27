@@ -1,13 +1,31 @@
 package com.huni.Fragment;
 
-import com.huni.R;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.huni.R;
+import com.huni.data.SharedPreference;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,57 +35,54 @@ import android.widget.Button;
 import android.widget.ListView;
 
 public class MovieFragment extends Fragment{
-	
+
 	private Button movieBtn;
+	private MovieTask movieTask;
+	private SharedPreference mPreference;
+	private String accessToken;
+	private String ip;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView=inflater.inflate(R.layout.movie_layout, container,false);
-		
-		
+
+
+		mPreference = new SharedPreference(getActivity());
+
+		mPreference.getValue("ip", ip); //ip 주소
+		mPreference.getValue("accessToken", accessToken); //accessToken
+
 		movieBtn = (Button)rootView.findViewById(R.id.movieBtn);
-		
+
 		movieBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.parse("http://www.archive.org/download/Unexpect2001/Unexpect2001_512kb.mp4");
-				intent.setDataAndType(uri, "video/*");
-				startActivity(intent);
+
+				movieTask = new MovieTask(getActivity());
+				movieTask.execute();
 			}
 		});
 
 		return rootView;
 	}
 
-	public void showMovie()
-	{
-
-	}
-
-	class MovieTask extends AsyncTask<Object, String, Void>{
+	class MovieTask extends AsyncTask<Object, String, JSONObject>{
 
 		private Context mContext;
 		private boolean started=true;
+		private String JSON="";
+		private ProgressDialog dialog;
+		private JSONObject mJsonObject;
 
 
 		public MovieTask(Context context)
 		{
 			mContext = context;
 		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			// TODO Auto-generated method stub
-			//작업 완료후 하는 일;
-
-			super.onPostExecute(result);
-		}
-
 
 		@Override
 		protected void onCancelled() {
@@ -81,25 +96,76 @@ public class MovieFragment extends Fragment{
 			// TODO Auto-generated method stub
 			//작업을 시작전 하는 일 
 
+			dialog = new ProgressDialog(mContext);
+			dialog.setTitle("동영상 로딩중");
+			dialog.setMessage("Please wait while loading...");
+			dialog.setIndeterminate(true);
+			dialog.setCancelable(true);
+			dialog.show();
+
+
 			super.onPreExecute();
 		}
 
 		@Override
-		protected Void doInBackground(Object... params) {
+		protected JSONObject doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 
-			while(started)
-			{
-				if (isCancelled())
-				{
-					break;
-				}
-			}
-			return null;
-		}
-	}
-	public void errorMessage()
-	{
+			try {
+				DefaultHttpClient mhttpClient =new DefaultHttpClient();
+				HttpGet mHttpGet =new HttpGet("http://192.168.0.4:5000/askfor?accessToken=accessToken&order=movie");
 
+				//HttpGet mHttpGet =new HttpGet("http://" + "192.168.0.4" + ":5000/askfor?accessToken=accessToken&order=movie/");
+				ArrayList<NameValuePair> nameValuePairs =new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("order","picture"));	//전달할 인자들 설정
+				HttpResponse mhttpHttpResponse = mhttpClient.execute(mHttpGet);
+
+				HttpEntity mHttpEntity =mhttpHttpResponse.getEntity();
+				if(mHttpEntity!=null)
+				{
+					JSON = EntityUtils.toString(mHttpEntity);
+					Log.i("RESPONSE", JSON);
+
+				}
+
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				mJsonObject = new JSONObject(JSON);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			return mJsonObject;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			// TODO Auto-generated method stub
+			//작업 완료후 하는 일;
+
+			String url="";
+			try {
+				url = result.getString("result");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Uri uri = Uri.parse(url);
+			//Uri uri = Uri.parse(result);
+			startActivity(new Intent(Intent.ACTION_VIEW,uri));
+			dialog.dismiss();
+
+			super.onPostExecute(result);
+		}
 	}
 }

@@ -14,11 +14,11 @@
         <string name="movie">movie</string>
         <string name="picture">picture</string>
         <string-array name="setting">
-            <item >인체감지알림</item>
-            <item >주야간 설정</item>
-            <item >신고</item>
+            <item >적외선 센서</item>
+            <item >사운드 센서</item>
         </string-array>
         <string name="startMovie">동영상 보기</string>
         <string name="startPicture">사진 보기</string>
+        <string name="alert">신고</string>
 
 </resources>

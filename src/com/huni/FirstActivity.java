@@ -63,7 +63,7 @@ public class FirstActivity extends Activity{
 		ipText= (EditText)findViewById(R.id.idText);
 		passText= (EditText)findViewById(R.id.passwordText);
 		connectButton = (Button)findViewById(R.id.connectButton);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(R.drawable.ic_action_cast);
 		
 		mPreference = new SharedPreference(this);
 
@@ -72,15 +72,17 @@ public class FirstActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//ip = ipText.getText().toString();
+				ip = ipText.getText().toString();
 				mPreference.put("ip", ip);
-				//passWd = passText.getText().toString();
+				//ip를 sharePreference 에 저장
+				passWd = passText.getText().toString();
 				mPreference.put("passwd", passWd);
+				//passwd를 sharePreference 에 저장
 				mProgressTask= new ProgressTask(FirstActivity.this);
-				
+						
 				Intent intent = new Intent(FirstActivity.this,MainActivity.class);
 				startActivity(intent);
-				//mProgressTask.execute();	
+				//mProgressTask.execute(); 서버에 접속하는 Thread
 			
 			}
 		};
@@ -100,7 +102,6 @@ public class FirstActivity extends Activity{
 		private ProgressDialog dialog;
 		private Context mContext;
 		private boolean started=true;
-		private InputStream mInputStream =null;
 		private String JSON="";
 		private String accessToken="";
 		private JSONObject mJsonObject;
@@ -140,17 +141,16 @@ public class FirstActivity extends Activity{
 				// HTTP request 를 보낼 때 POST 방식은 보통 List<NameValuePair> 를 만들어서 Entity 로 전달을 하곤 합니다.
 				DefaultHttpClient mhttpClient =new DefaultHttpClient();
 				HttpPost mHttpPost =new HttpPost("http://" + "192.168.0.4" + ":5000/login"); //서버 ip 주소
+				//HttpPost mHttpPost =new HttpPost("http://" +ip + ":5000/login"); 원래 코드
 				ArrayList<NameValuePair> nameValuePairs =new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("passwd", "1234"));	//전달할 인자들 설정
+				nameValuePairs.add(new BasicNameValuePair("passwd", passWd));	//전달할 인자들 설정
 				mHttpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 				HttpResponse mhttpHttpResponse= mhttpClient.execute(mHttpPost); //서버에 연결 요청	
 				HttpEntity mHttpEntity =mhttpHttpResponse.getEntity(); //서버에서 값 가져오기.
 				
 				JSON = EntityUtils.toString(mHttpEntity);
-
-				//mInputStream=mHttpEntity.getContent();
-
+				
 			}
 			catch (UnsupportedEncodingException e) {
 				// TODO: handle exception
@@ -216,8 +216,7 @@ public class FirstActivity extends Activity{
 			else
 			{
 				Intent intent = new Intent(FirstActivity.this,MainActivity.class);
-				mPreference.put("accessToken", accessToken);
-				intent.putExtra("accessToken", accessToken);
+				mPreference.put("accessToken", accessToken); //accessToken을 저장
 				intent.putExtra("ip", ip);
 				startActivity(intent);
 			}
@@ -225,9 +224,4 @@ public class FirstActivity extends Activity{
 		}
 
 	}
-	public void errorMessage()
-	{
-
-	}
-
 }

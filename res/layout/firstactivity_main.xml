@@ -31,7 +31,8 @@
         android:layout_alignBaseline="@+id/movieText"
         android:layout_alignBottom="@+id/movieText"
         android:layout_toRightOf="@+id/movieText"
-        android:ems="10" >
+        android:ems="10"
+        android:inputType="number" >
 
         <requestFocus />
     </EditText>

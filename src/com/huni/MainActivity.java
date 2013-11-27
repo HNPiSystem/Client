@@ -3,6 +3,7 @@ package com.huni;
 import com.huni.Fragment.FragmentAdapter;
 import com.huni.data.SharedPreference;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.ActionBar.Tab;
 import android.app.ActionBar.TabListener;
@@ -62,7 +63,8 @@ public class MainActivity extends FragmentActivity implements TabListener{
 		actionbar.setTitle(mTitles[0]);
 		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); 
 		actionbar.setHomeButtonEnabled(true);
-		
+		actionbar.setIcon(R.drawable.ic_action_previous_item);
+	
 		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
 		{
 			@Override
@@ -70,9 +72,7 @@ public class MainActivity extends FragmentActivity implements TabListener{
 				// TODO Auto-generated method stub
 				actionbar.setSelectedNavigationItem(position);
 				actionbar.setTitle(mTitles[position]);
-				
 			}
-
 		});
 		makeTabmenu();
 		
@@ -83,6 +83,10 @@ public class MainActivity extends FragmentActivity implements TabListener{
 	    if (item.getItemId() == android.R.id.home) {
 	        finish();
 	        return true;
+	    }
+	    else if(item.getItemId() == R.id.alert)
+	    {
+	    	notice();
 	    }
 	    return super.onOptionsItemSelected(item);
 	}
@@ -119,6 +123,13 @@ public class MainActivity extends FragmentActivity implements TabListener{
 					.setText(mTitles[i])
 					.setTabListener(this));
 		}
+	}
+	
+	private void notice()
+	{
+		//신고기능
+		Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:112"));
+		startActivity(intent);
 	}
 
 }
