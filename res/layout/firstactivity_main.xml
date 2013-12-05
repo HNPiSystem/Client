@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/movieText"
         android:layout_toRightOf="@+id/movieText"
         android:ems="10"
-        android:inputType="number" >
+        android:inputType="date" >
 
         <requestFocus />
     </EditText>
@@ -54,5 +54,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/connect" />
+
+    <CheckBox
+        android:id="@+id/passwdCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/connectButton"
+        android:layout_below="@+id/passwordText"
+        android:layout_marginTop="18dp"
+        android:text="@string/passwdStore" />
 
 </RelativeLayout>

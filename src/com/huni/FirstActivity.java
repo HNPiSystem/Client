@@ -1,23 +1,17 @@
 package com.huni;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -34,9 +28,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -45,13 +43,17 @@ public class FirstActivity extends Activity{
 	private EditText ipText;
 	private EditText passText;
 	private Button connectButton;
+	private CheckBox passwdCheckBox;
 	private OnClickListener myOnclickListener;
 	public String ip;
 	private String passWd;
-	private ProgressDialog connectDialog;
+	private String hashPasswd;
 	private ProgressTask mProgressTask;
 	private boolean FlagCancelled = false;
-	private SharedPreference mPreference;
+	private boolean isStored = false;
+	private boolean isBackButtonTouched = false;
+	private SharedPreference mPreference;	
+	private OnCheckedChangeListener mChangeListener;
 
 
 	@Override
@@ -63,31 +65,82 @@ public class FirstActivity extends Activity{
 		ipText= (EditText)findViewById(R.id.idText);
 		passText= (EditText)findViewById(R.id.passwordText);
 		connectButton = (Button)findViewById(R.id.connectButton);
-		getActionBar().setIcon(R.drawable.ic_action_cast);
-		
-		mPreference = new SharedPreference(this);
+		passwdCheckBox = (CheckBox)findViewById(R.id.passwdCheckBox);
 
+		ipText.setText("192.168.0.4");
+		mPreference = new SharedPreference(this);
+		isStored = mPreference.getValue("isStored",false);
+		
+		
+		setPasswd(isStored);
+		
 		myOnclickListener = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				ip = ipText.getText().toString();
 				mPreference.put("ip", ip);
 				//ip를 sharePreference 에 저장
 				passWd = passText.getText().toString();
-				mPreference.put("passwd", passWd);
+				mPreference.put("passWd", passWd);
+				hashPasswd = getMD5Hash(passWd); //md5로 passwd를 hashcode로 변환
+				mPreference.put("hashPasswd", hashPasswd);
 				//passwd를 sharePreference 에 저장
-				mProgressTask= new ProgressTask(FirstActivity.this);
-						
-				Intent intent = new Intent(FirstActivity.this,MainActivity.class);
+				Intent intent = new Intent(FirstActivity.this,SelectActivity.class);
 				startActivity(intent);
-				//mProgressTask.execute(); 서버에 접속하는 Thread
+//				mProgressTask= new ProgressTask(FirstActivity.this); //쓰레드
+//				mProgressTask.execute(); //서버에 접속하는 Thread
+
+			}
+		};
+		
+		mChangeListener = new OnCheckedChangeListener() {
 			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(buttonView.getId() == R.id.passwdCheckBox)
+				{
+					if(isChecked)
+					{
+						mPreference.put("isStored", true);
+					}
+					else
+					{
+						mPreference.put("isStored", false);
+					}
+				}
+				
 			}
 		};
 
 		connectButton.setOnClickListener(myOnclickListener);
+		passwdCheckBox.setOnCheckedChangeListener(mChangeListener);
+	}
+
+
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if(keyCode == KeyEvent.KEYCODE_BACK)
+		{
+
+			if(isBackButtonTouched == false)
+			{
+				isBackButtonTouched = true;
+				Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+				return true;
+			}
+			else if (isBackButtonTouched ==true)
+			{
+				finish();
+				return super.onKeyDown(keyCode, event);
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -97,6 +150,8 @@ public class FirstActivity extends Activity{
 		//mProgressTask.cancel(true);
 		super.onPause();
 	}
+	
+	
 	class ProgressTask extends AsyncTask<Object, String, JSONObject>{
 
 		private ProgressDialog dialog;
@@ -110,7 +165,6 @@ public class FirstActivity extends Activity{
 		{
 			mContext = context;
 		}
-
 
 		@Override
 		protected void onCancelled() {
@@ -140,17 +194,15 @@ public class FirstActivity extends Activity{
 			{
 				// HTTP request 를 보낼 때 POST 방식은 보통 List<NameValuePair> 를 만들어서 Entity 로 전달을 하곤 합니다.
 				DefaultHttpClient mhttpClient =new DefaultHttpClient();
-				HttpPost mHttpPost =new HttpPost("http://" + "192.168.0.4" + ":5000/login"); //서버 ip 주소
-				//HttpPost mHttpPost =new HttpPost("http://" +ip + ":5000/login"); 원래 코드
+				HttpPost mHttpPost =new HttpPost("http://" +ip + ":5000/login"); //서버 ip 주소
 				ArrayList<NameValuePair> nameValuePairs =new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("passwd", passWd));	//전달할 인자들 설정
+				nameValuePairs.add(new BasicNameValuePair("passwd", hashPasswd));	//전달할 인자들 설정
 				mHttpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
 				HttpResponse mhttpHttpResponse= mhttpClient.execute(mHttpPost); //서버에 연결 요청	
 				HttpEntity mHttpEntity =mhttpHttpResponse.getEntity(); //서버에서 값 가져오기.
-				
+
 				JSON = EntityUtils.toString(mHttpEntity);
-				
+
 			}
 			catch (UnsupportedEncodingException e) {
 				// TODO: handle exception
@@ -164,7 +216,7 @@ public class FirstActivity extends Activity{
 				// TODO: handle exception
 				e.printStackTrace();
 			}
-/*
+			/*
 			try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(
 						mInputStream, "UTF-8"));
@@ -215,7 +267,7 @@ public class FirstActivity extends Activity{
 			}
 			else
 			{
-				Intent intent = new Intent(FirstActivity.this,MainActivity.class);
+				Intent intent = new Intent(FirstActivity.this,SelectActivity.class);
 				mPreference.put("accessToken", accessToken); //accessToken을 저장
 				intent.putExtra("ip", ip);
 				startActivity(intent);
@@ -224,4 +276,34 @@ public class FirstActivity extends Activity{
 		}
 
 	}
+	
+	public String getMD5Hash(String passWd)
+	{
+		//비밀번호 MD5로 hashCode로 만듬 
+		MessageDigest mDigest = null;
+		String hash = null;
+		
+		try
+		{
+			mDigest = MessageDigest.getInstance("MD5");
+			mDigest.update(passWd.getBytes(),0,passWd.length());
+			hash = new BigInteger(1,mDigest.digest()).toString(16);
+		}
+		catch(NoSuchAlgorithmException e)
+		{
+			e.getStackTrace();
+		}
+		
+		return hash;
+	}
+	private void setPasswd(boolean isChecked)
+	{
+		if(isChecked)
+		{
+			passwdCheckBox.setChecked(isStored);
+			passText.setText(mPreference.getValue("passWd", ""));
+		}
+	}
+
+
 }

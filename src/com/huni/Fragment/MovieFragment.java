@@ -48,11 +48,10 @@ public class MovieFragment extends Fragment{
 		// TODO Auto-generated method stub
 		View rootView=inflater.inflate(R.layout.movie_layout, container,false);
 
-
 		mPreference = new SharedPreference(getActivity());
 
-		mPreference.getValue("ip", ip); //ip 주소
-		mPreference.getValue("accessToken", accessToken); //accessToken
+		ip = mPreference.getValue("ip", ""); //ip 주소
+		accessToken = mPreference.getValue("accessToken", ""); //accessToken
 
 		movieBtn = (Button)rootView.findViewById(R.id.movieBtn);
 
@@ -63,7 +62,10 @@ public class MovieFragment extends Fragment{
 				// TODO Auto-generated method stub
 
 				movieTask = new MovieTask(getActivity());
-				movieTask.execute();
+				//movieTask.execute();
+				
+				Uri uri = Uri.parse("http://www.wowza.com/_h264/BigBuckBunny_115k.mov");
+				startActivity(new Intent(Intent.ACTION_VIEW,uri));
 			}
 		});
 
@@ -127,8 +129,7 @@ public class MovieFragment extends Fragment{
 					Log.i("RESPONSE", JSON);
 
 				}
-
-
+				
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -143,8 +144,6 @@ public class MovieFragment extends Fragment{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-
 			return mJsonObject;
 		}
 
@@ -161,7 +160,6 @@ public class MovieFragment extends Fragment{
 				e.printStackTrace();
 			}
 			Uri uri = Uri.parse(url);
-			//Uri uri = Uri.parse(result);
 			startActivity(new Intent(Intent.ACTION_VIEW,uri));
 			dialog.dismiss();
 

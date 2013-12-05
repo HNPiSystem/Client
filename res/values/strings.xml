@@ -20,5 +20,16 @@
         <string name="startMovie">동영상 보기</string>
         <string name="startPicture">사진 보기</string>
         <string name="alert">신고</string>
+        <string-array name="Icon_Array">
+            <item >icon</item>
+            <item >icon</item>
+        </string-array>
+        <string name="camera">카메라</string>
+        <string name="sensor">센서</string>
+        <string name="choice">선택</string>
+        <string-array name="sensorTab">
+            <item >센서 설정</item>
+        </string-array>
+        <string name="passwdStore">비밀번호 저장</string>
 
 </resources>

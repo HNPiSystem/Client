@@ -62,9 +62,8 @@ public class PictureFragment extends Fragment{
 		mImageView = (ImageView)rootView.findViewById(R.id.resultImageView);
 
 		mPreference = new SharedPreference(getActivity());
-
-		mPreference.getValue("ip", ip); //ip 주소
-		mPreference.getValue("accessToken", accessToken); //accessToken
+		ip = mPreference.getValue("ip", ""); //ip 주소
+		accessToken = mPreference.getValue("accessToken", ""); //accessToken
 
 
 		Picturebtn.setOnClickListener(new OnClickListener() {

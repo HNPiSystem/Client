@@ -10,11 +10,12 @@ public class FragmentAdapter extends FragmentPagerAdapter{
 		super(fm);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public Fragment getItem(int position) {
 		// TODO Auto-generated method stub
 		Fragment fragment = null;
+
 
 		switch(position)
 		{
@@ -23,12 +24,14 @@ public class FragmentAdapter extends FragmentPagerAdapter{
 		case 2: fragment = new SettingFragment(); break;
 		}
 
+
 		return fragment;
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
+
 		return 3;
 	}
 
