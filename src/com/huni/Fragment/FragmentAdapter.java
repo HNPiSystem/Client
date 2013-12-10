@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class FragmentAdapter extends FragmentPagerAdapter{
 
-	public FragmentAdapter(FragmentManager fm) {
+	private int deviceNum;
+	public FragmentAdapter(FragmentManager fm, int device) {
 		super(fm);
+		deviceNum = device;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -17,11 +19,11 @@ public class FragmentAdapter extends FragmentPagerAdapter{
 		Fragment fragment = null;
 
 
-		switch(position)
+		switch(deviceNum)
 		{
-		case 0: fragment = new PictureFragment(); break;
-		case 1: fragment = new MovieFragment(); break;
-		case 2: fragment = new SettingFragment(); break;
+		case 0: fragment = new MovieFragment(); break;
+		case 1: fragment = new TempFragment(); break;
+		case 2: fragment = new LightFragment(); break;
 		}
 
 
@@ -32,7 +34,7 @@ public class FragmentAdapter extends FragmentPagerAdapter{
 	public int getCount() {
 		// TODO Auto-generated method stub
 
-		return 3;
+		return 1;
 	}
 
 }

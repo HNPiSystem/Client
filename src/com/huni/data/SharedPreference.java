@@ -9,7 +9,12 @@ public class SharedPreference {
 	private final String PREF_NAME = "happy_pref";
 	public final static String PREF_INTRO_USER_AGREEMENT ="PREF_USER_AGREEMENT";
     public final static String PREF_MAIN_VALUE = "PREF_MAIN_VALUE";
-    
+    public final static String passWd = "passWd";
+    public final static String hassPassWd = "hashPassWd";
+    public final static String ip ="ip";
+    public final static String device = "device";
+    public final static String accessToken = "accessToken";
+    public final static String isStored = "isStored";
     static Context mContext;
     
     public SharedPreference(Context c) {

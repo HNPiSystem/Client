@@ -7,19 +7,43 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="16" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/home"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo">
+        android:theme="@style/CustomTheme" >
+
+        <!-- GCM 리시버 -->
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </receiver>
+        
+        <service android:name=".GCMIntentService" />
+        
+        <activity
+            android:name="com.huni.SplashActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:label="" >
+        </activity>
+
         <activity
             android:name="com.huni.MainActivity"
-            android:label="">
+            android:label="" >
         </activity>
-        <activity
-            android:name="com.huni.SelectActivity" ></activity>
+        <activity android:name="com.huni.LoginActivity"></activity>
+        <activity android:name="com.huni.SelectActivity" >
+        </activity>
         <activity android:name="com.huni.FirstActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

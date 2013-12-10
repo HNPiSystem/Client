@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">홈네트워크Pi</string>
+    <string name="app_name">Homenet Pi</string>
     <string name="action_settings">Settings</string>
-    <string name="ip">IP주소</string>
-    <string name="password">비밀번호</string>
-    <string name="connect">접속하기</string>
+    <string name="ip">IP Address</string>
+    <string name="password">Password</string>
+    <string name="connect">Connect</string>
     <string-array name="tab">
-        <item >사진</item>
-        <item >동영상</item>
-        <item >설정</item>
+        <item >CCTV Module</item>
+        <item >Temp Monitor</item>
+        <item >Light Controller</item>
+        <item >Comming Soon</item>
     </string-array>
         <string name="movie">movie</string>
         <string name="picture">picture</string>
@@ -17,19 +18,23 @@
             <item >적외선 센서</item>
             <item >사운드 센서</item>
         </string-array>
-        <string name="startMovie">동영상 보기</string>
+        <string name="startMovie">Watch my room</string>
         <string name="startPicture">사진 보기</string>
         <string name="alert">신고</string>
         <string-array name="Icon_Array">
             <item >icon</item>
             <item >icon</item>
         </string-array>
-        <string name="camera">카메라</string>
-        <string name="sensor">센서</string>
-        <string name="choice">선택</string>
         <string-array name="sensorTab">
             <item >센서 설정</item>
         </string-array>
-        <string name="passwdStore">비밀번호 저장</string>
+        <string name="passwdStore">Save IP &amp; password</string>
+        <string name="passWdChange">Change P/W</string>
+        <string name="previousPass">Old Password</string>
+        <string name="newPass">New Password</string>
+        <string name="againPass">Comfirm New Password</string>
+        <string name="CCTV">CCTV Module</string>
+        <string name="Temp">Temp Monitor</string>
+        <string name="Light">Light Controller</string>
 
 </resources>

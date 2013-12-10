@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.huni.Fragment.FragmentAdapter;
-import com.huni.Fragment.SecondFragmentAdapter;
+
 import com.huni.data.SharedPreference;
 
 import android.net.Uri;
@@ -52,7 +52,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements TabListener{
+public class MainActivity extends FragmentActivity {
 
 
 	private ViewPager mViewPager;
@@ -75,8 +75,8 @@ public class MainActivity extends FragmentActivity implements TabListener{
 		Intent intent = getIntent();
 		deviceNum = intent.getIntExtra("device", 0);
 
-		ip = mPreference.getValue("ip", "");
-		accessToken = mPreference.getValue("accessToken", "");
+		ip = mPreference.getValue(SharedPreference.ip, ""); //접속시 사용했던 ip 가져오기 	
+		accessToken = mPreference.getValue(SharedPreference.accessToken, "");//accessToken 가져오기 
 		Toast.makeText(getBaseContext(), accessToken, Toast.LENGTH_SHORT).show();
 
 		mViewPager = (ViewPager)findViewById(R.id.viewpager1);
@@ -90,18 +90,10 @@ public class MainActivity extends FragmentActivity implements TabListener{
 	{
 		//actionBar Setting method
 		actionbar = getActionBar();
-		if(menu == 0)
-		{
-			mTitles = getResources().getStringArray(R.array.tab);
-		}
-		else if(menu == 1)
-		{
-			mTitles = getResources().getStringArray(R.array.sensorTab);
-		}
-		actionbar.setTitle(mTitles[0]);
-		actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); 
+		mTitles = getResources().getStringArray(R.array.tab);
+		actionbar.setTitle(mTitles[menu]);
 		actionbar.setHomeButtonEnabled(true);
-		actionbar.setIcon(R.drawable.ic_action_previous_item);
+		actionbar.setIcon(R.drawable.btn_back);
 
 	}
 
@@ -109,30 +101,19 @@ public class MainActivity extends FragmentActivity implements TabListener{
 	private void setViewPager(int menu)
 	{
 		//viewPager Setting method
-
 		mFragmentManager = getSupportFragmentManager();
-
-		if(menu == 0)
+		mFragmentPagerAdapter = new FragmentAdapter(mFragmentManager,deviceNum);
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
 		{
-			mFragmentPagerAdapter = new FragmentAdapter(mFragmentManager);
-			mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
-			{
-				@Override
-				public void onPageSelected(int position) {
-					// TODO Auto-generated method stub
-					actionbar.setSelectedNavigationItem(position);
-					actionbar.setTitle(mTitles[position]);
-				}
-			});
+			@Override
+			public void onPageSelected(int position) {
+				// TODO Auto-generated method stub
 
-		}
-		else if (menu ==1)
-		{
-			mFragmentPagerAdapter = new SecondFragmentAdapter(mFragmentManager);
-		}
+				actionbar.setTitle(mTitles[position]);
+			}
+		});
 		mViewPager.setAdapter(mFragmentPagerAdapter);
-
-		makeTabmenu();
+		
 	}
 
 
@@ -156,144 +137,23 @@ public class MainActivity extends FragmentActivity implements TabListener{
 		return true;
 	}
 
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		mViewPager.setCurrentItem(tab.getPosition());		
-	}
-
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
-	}
-	private void makeTabmenu()
-	{
-		for (int i = 0; i < mTitles.length; i++) {
-			actionbar.addTab(
-					actionbar.newTab()
-					.setText(mTitles[i])
-					.setTabListener(this));
-		}
-	}
 
 	private void notice()
 	{
 		//신고기능 112에 전화 
 		AlertDialog.Builder ab = new AlertDialog.Builder(MainActivity.this);
 		ab.setMessage("112에 신고하시겠습니까?");
-		ab.setPositiveButton("Yes", null);
+		ab.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:112"));
+				startActivity(intent);
+			}
+		});
 		ab.setNegativeButton("No", null);
 		ab.show();
-		//		Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:112"));
-		//		startActivity(intent);
+
 	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		//intent된 후에 호출되는 메소드 
-		super.onRestart();
-		Toast.makeText(this, "재시작",Toast.LENGTH_SHORT).show();
-	}
-
-	class MovieStopTask extends AsyncTask<Object, String, JSONObject>{
-
-		private Context mContext;
-		private boolean started=true;
-		private String JSON="";
-		private ProgressDialog dialog;
-		private JSONObject mJsonObject;
-
-
-		public MovieStopTask(Context context)
-		{
-			mContext = context;
-		}
-
-		@Override
-		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			started = false;
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			//작업을 시작전 하는 일 
-
-			dialog = new ProgressDialog(mContext);
-			dialog.setTitle("동영상 스트리밍 종료중");
-			dialog.setMessage("Please wait while loading...");
-			dialog.setIndeterminate(true);
-			dialog.setCancelable(true);
-			dialog.show();
-
-
-			super.onPreExecute();
-		}
-
-		@Override
-		protected JSONObject doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-
-			try {
-				DefaultHttpClient mhttpClient =new DefaultHttpClient();
-				HttpGet mHttpGet =new HttpGet("http://192.168.0.4:5000/askfor?accessToken=accessToken&order=movie");
-				//종료하는 url에 접속하게 된다.
-				//HttpGet mHttpGet =new HttpGet("http://" + "192.168.0.4" + ":5000/askfor?accessToken=accessToken&order=movie/");
-				ArrayList<NameValuePair> nameValuePairs =new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("order","picture"));	//전달할 인자들 설정
-				HttpResponse mhttpHttpResponse = mhttpClient.execute(mHttpGet);
-
-				HttpEntity mHttpEntity =mhttpHttpResponse.getEntity();
-				if(mHttpEntity!=null)
-				{
-					JSON = EntityUtils.toString(mHttpEntity);
-					Log.i("RESPONSE", JSON);
-
-				}
-
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			try {
-				mJsonObject = new JSONObject(JSON);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return mJsonObject;
-		}
-
-		@Override
-		protected void onPostExecute(JSONObject result) {
-			// TODO Auto-generated method stub
-			//작업 완료후 하는 일;
-
-			String url="";
-			try {
-				url = result.getString("result");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			dialog.dismiss();
-
-			super.onPostExecute(result);
-		}
-	}
-
 }

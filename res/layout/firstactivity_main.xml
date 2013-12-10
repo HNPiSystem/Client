@@ -5,63 +5,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/movieText"
+    <Button
+        android:id="@+id/passChange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/connectButton"
+        android:layout_alignBottom="@+id/connectButton"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="34dp"
+        android:text="@string/passWdChange" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="46dp"
-        android:text="@string/ip" />
+        android:layout_marginBottom="21dp"
+        android:layout_marginLeft="37dp"
+        android:text="@string/connect" />
+
+    <ImageView
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/movieText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/main_logo" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/movieText"
-        android:layout_below="@+id/movieText"
-        android:layout_marginTop="32dp"
+        android:layout_above="@+id/passwordText"
+        android:layout_alignLeft="@+id/passwordText"
         android:text="@string/password" />
 
     <EditText
         android:id="@+id/idText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/movieText"
-        android:layout_alignBottom="@+id/movieText"
-        android:layout_toRightOf="@+id/movieText"
+        android:layout_above="@+id/textView2"
+        android:layout_alignRight="@+id/passwordText"
+        android:layout_marginBottom="18dp"
         android:ems="10"
-        android:inputType="date" >
+        android:inputType="date" />
 
-        <requestFocus />
-    </EditText>
+    <TextView
+        android:id="@+id/movieText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/idText"
+        android:layout_alignLeft="@+id/textView2"
+        android:text="@string/ip" />
+
+    <CheckBox
+        android:id="@+id/PassWdStored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/passChange"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/passwdStore" 
+        android:textColor="@android:color/black"
+        android:button="@drawable/custom_radio"/>
 
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignLeft="@+id/idText"
+        android:layout_above="@+id/PassWdStored"
+        android:layout_alignLeft="@+id/connectButton"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword" >
 
-    <Button
-        android:id="@+id/connectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/connect" />
-
-    <CheckBox
-        android:id="@+id/passwdCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/connectButton"
-        android:layout_below="@+id/passwordText"
-        android:layout_marginTop="18dp"
-        android:text="@string/passwdStore" />
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>

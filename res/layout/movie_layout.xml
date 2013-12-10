@@ -5,13 +5,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/movieBtn"
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="46dp"
+        android:src="@drawable/ic_cctv" />
+
+    <Switch
+        android:id="@+id/PIRswitch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="60dp"
+        android:text="PIR Sensor"
+        android:thumb="@drawable/btn"
+        android:track="@drawable/custom_switch" 
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:id="@+id/movieBtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/PIRswitch"
+        android:layout_marginTop="40dp"
         android:text="@string/startMovie" />
 
 </RelativeLayout>

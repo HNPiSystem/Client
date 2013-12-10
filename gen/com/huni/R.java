@@ -29,61 +29,101 @@ public final class R {
         public static final int switchText=0x7f040002;
     }
     public static final class drawable {
-        public static final int back_button=0x7f020000;
-        public static final int home=0x7f020001;
-        public static final int ic_action_cast=0x7f020002;
-        public static final int ic_action_previous_item=0x7f020003;
-        public static final int ic_action_search=0x7f020004;
-        public static final int ic_action_warning=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
+        public static final int background=0x7f020000;
+        public static final int btn=0x7f020001;
+        public static final int btn_back=0x7f020002;
+        public static final int btn_big=0x7f020003;
+        public static final int btn_big_pressed=0x7f020004;
+        public static final int btn_cctv_disable=0x7f020005;
+        public static final int btn_commingsoon=0x7f020006;
+        public static final int btn_light_disable=0x7f020007;
+        public static final int btn_pressed=0x7f020008;
+        public static final int btn_temp_disable=0x7f020009;
+        public static final int custom_button=0x7f02000a;
+        public static final int custom_radio=0x7f02000b;
+        public static final int custom_switch=0x7f02000c;
+        public static final int custom_textview=0x7f02000d;
+        public static final int edittext=0x7f02000e;
+        public static final int header=0x7f02000f;
+        public static final int home=0x7f020010;
+        public static final int ic_action_cast=0x7f020011;
+        public static final int ic_action_previous_item=0x7f020012;
+        public static final int ic_action_search=0x7f020013;
+        public static final int ic_action_warning=0x7f020014;
+        public static final int ic_bulb=0x7f020015;
+        public static final int ic_cctv=0x7f020016;
+        public static final int ic_launcher=0x7f020017;
+        public static final int ic_temp=0x7f020018;
+        public static final int icon=0x7f020019;
+        public static final int input=0x7f02001a;
+        public static final int input_focus=0x7f02001b;
+        public static final int main_logo=0x7f02001c;
+        public static final int radio=0x7f02001d;
+        public static final int radio_seleect=0x7f02001e;
+        public static final int splash=0x7f02001f;
+        public static final int switch_disable=0x7f020020;
+        public static final int switch_off=0x7f020021;
+        public static final int switch_on=0x7f020022;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f09000b;
+        public static final int PIRswitch=0x7f090015;
+        public static final int PassWdStored=0x7f090009;
+        public static final int PowerSwitch=0x7f09000d;
         public static final int RelativeLayout1=0x7f090001;
-        public static final int action_settings=0x7f090012;
-        public static final int alert=0x7f090013;
-        public static final int camera=0x7f09000d;
-        public static final int choiceBtn=0x7f09000f;
-        public static final int connectButton=0x7f090006;
-        public static final int device=0x7f09000c;
-        public static final int idText=0x7f090004;
-        public static final int infraredSwitch=0x7f090010;
-        public static final int movieBtn=0x7f090008;
-        public static final int movieText=0x7f090002;
-        public static final int passwdCheckBox=0x7f090007;
-        public static final int passwordText=0x7f090005;
-        public static final int pictureBtn=0x7f09000a;
-        public static final int resultImageView=0x7f090009;
-        public static final int search=0x7f090014;
-        public static final int sensor=0x7f09000e;
-        public static final int soundSwitch=0x7f090011;
-        public static final int textView2=0x7f090003;
+        public static final int TextView01=0x7f090014;
+        public static final int TextView02=0x7f090013;
+        public static final int action_settings=0x7f090018;
+        public static final int againPass=0x7f090011;
+        public static final int alert=0x7f090019;
+        public static final int brightSwitch=0x7f09000c;
+        public static final int changeBtn=0x7f09000e;
+        public static final int connectButton=0x7f090003;
+        public static final int idText=0x7f090008;
+        public static final int imageButton=0x7f090004;
+        public static final int imageView1=0x7f09000b;
+        public static final int movieBtn=0x7f090016;
+        public static final int movieText=0x7f090005;
+        public static final int nameText=0x7f09000a;
+        public static final int newPass=0x7f090012;
+        public static final int passChange=0x7f090002;
+        public static final int passwordText=0x7f090007;
+        public static final int previousPass=0x7f090010;
+        public static final int select_gridview=0x7f090017;
+        public static final int tempTextView=0x7f09000f;
+        public static final int textView2=0x7f090006;
         public static final int viewpager1=0x7f090000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int firstactivity_main=0x7f030001;
-        public static final int movie_layout=0x7f030002;
-        public static final int picture_layout=0x7f030003;
-        public static final int select_layout=0x7f030004;
-        public static final int setting_layout=0x7f030005;
+        public static final int image_text_button=0x7f030002;
+        public static final int light_layout=0x7f030003;
+        public static final int login_activity=0x7f030004;
+        public static final int movie_layout=0x7f030005;
+        public static final int select_layout=0x7f030006;
+        public static final int splash_layout=0x7f030007;
+        public static final int temp_layout=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int CCTV=0x7f05000f;
+        public static final int Light=0x7f050011;
+        public static final int Temp=0x7f050010;
         public static final int action_settings=0x7f050001;
+        public static final int againPass=0x7f05000e;
         public static final int alert=0x7f050009;
         public static final int app_name=0x7f050000;
-        public static final int camera=0x7f05000a;
-        public static final int choice=0x7f05000c;
         public static final int connect=0x7f050004;
         public static final int ip=0x7f050002;
         public static final int movie=0x7f050005;
-        public static final int passwdStore=0x7f05000d;
+        public static final int newPass=0x7f05000d;
+        public static final int passWdChange=0x7f05000b;
+        public static final int passwdStore=0x7f05000a;
         public static final int password=0x7f050003;
         public static final int picture=0x7f050006;
-        public static final int sensor=0x7f05000b;
+        public static final int previousPass=0x7f05000c;
         public static final int startMovie=0x7f050007;
         public static final int startPicture=0x7f050008;
     }
@@ -93,11 +133,18 @@ public final class R {
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
 
+
+
+
+
+
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
 
 
         
@@ -118,8 +165,19 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
-        /**  All customizations that are NOT specific to a particular API-level can go here. 
+        /** 
+    ActionBar styles
+    the theme applied to the application or activity
+
+    
          */
-        public static final int LightThemeSelector=0x7f070002;
+        public static final int CustomActionBarTheme=0x7f070003;
+        public static final int CustomButtonTheme=0x7f070005;
+        public static final int CustomCheckBoxTheme=0x7f070007;
+        /**  EditText Style 
+         */
+        public static final int CustomEditTextTheme=0x7f070004;
+        public static final int CustomTextViewTheme=0x7f070006;
+        public static final int CustomTheme=0x7f070002;
     }
 }
